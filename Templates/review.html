@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Review - {{ bookInfo[0][1] }}</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+  .orange {
+    color: #f4511e;
+  }
+
+  .header {
+    background-color: #f4511e; /* Orange */
+    color: #ffffff;
+    height: auto;
+    text-align: center;
+    padding-bottom: 30px;
+  }
+
+  .split-just-left {
+    width: 50%;
+    float: left;
+    text-align: left;
+    margin-top: 6px;
+    margin-left: 20px;
+  }
+
+  .split-just-right {
+    width: 50%;
+    float: right;
+    text-align: right;
+    margin-top: -17px;
+    margin-right: 20px;
+  }
+
+  .container-fluid {
+    padding: 5px;
+    text-align: center;
+  }
+
+  .bg-grey {
+    background-color: #f6f6f6;
+  }
+
+  .search-button {
+    background-color: #f4511e;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+
+  .page-container {
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .content-wrap {
+    padding-bottom: 2.5rem;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+    background-color: #f6f6f6;
+  }
+
+  .inline {
+    display: inline;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .search-container {
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #f4511e;
+    border-width: thin;
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+    max-width: 200;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .search-container-2 {
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #f4511e;
+    border-width: thin;
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+    max-width: 150;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .text-box-area {
+    width: 90%;
+    margin: 5px;
+    max-width: 90%;
+  }
+
+  .dropdown-box {
+    padding: 5px 10px;
+    border-radius: 2px;
+    margin-top: 6px;
+  }
+
+  .itals {
+    font-style: italic;
+  }
+</style>
+
+<body>
+  <div class="page-container">
+    <div class="content-wrap">
+
+      <div class="header">
+        <label class="split-just-left">Project 1: Books</label>
+        <label class="split-just-right">Cory Miller - CS50's Web Programming</label>
+      </div>
+
+
+      <div class="container-fluid bg-grey">
+        <h2>{{ bookInfo[0][1] }}:</h2>
+        <p>Author: {{ bookInfo[0][2] }}</p>
+        <p>Year Published: {{ bookInfo[0][3] }}</p>
+        <p>ISBN: {{ bookInfo[0][0] }}</p>
+      </div>
+
+      <div class="search-container">
+        <h3>Leave your own review for {{ bookInfo[0][1] }} here:</h3>
+        <form action="{{ url_for('save_review', isbn=bookInfo[0][0]) }}" method="get" class="form-inline text-center">
+
+          <div>
+            <textarea class="text-box-area" name="response" rows="3" placeholder="Your Book Review..."></textarea>
+          </div>
+
+          <div class="inline">
+            <label for="rating">Rating (1-5):</label>
+            <select class="dropdown-box" name="rating" id="rating">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <button type="btn btn-primary" class="search-button">Submit</button>
+          </div>
+        </form>
+      </div>
+
+
+        <div class="search-container-2">
+          <h3>Previous Reviews & Response - Goodreads</h3>
+          <p>{{ bookInfo[0][1] }} has been reviewed {{ apiInfo[0] }} times with an average score of {{ apiInfo[1] }}.</p>
+
+        {% if length >= 1 %}
+          {% for i in range(0,length) %}
+          <h4>{{ reviewies[i][0] }} said:</h4>
+          <p class="itals">{{ reviews[i][2] }}</p>
+          <p>Rating (1-5): {{ reviews[i][1] }}</p>
+          {% endfor %}
+          {% endif %}
+        </div>
+
+        <div class="footer">
+          <div class="inline">
+            <form action="{{ url_for('logout') }}">
+              <label class="warning-message">{{ message }}</label>
+              <button class="btn search-button">Sign Out</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+
+  </html>

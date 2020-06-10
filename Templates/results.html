@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Results</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+.header {
+  background-color: #f4511e; /* Orange */
+  color: #ffffff;
+  height: auto;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.split-just-left {
+  width: 50%;
+  float: left;
+  text-align: left;
+  margin-top: 6px;
+  margin-left: 20px;
+}
+
+.split-just-right {
+  width: 50%;
+  float: right;
+  text-align: right;
+  margin-top: -17px;
+  margin-right: 20px;
+}
+
+.grid-container {
+  display: grid;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  text-align: center;
+}
+
+.grid-item {
+  width: 100%;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 5px;
+  border-color: #f4511e;
+  max-width: 300px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.container-fluid {
+  padding: 5px;
+  text-align: center;
+}
+
+.bg-grey {
+  background-color: #f6f6f6;
+}
+
+.search-button {
+  background-color: #f4511e;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.review-button {
+  background-color: #f4511e;
+  color: white;
+  padding: 3px 15px;
+  border-style: ridge;
+  border-radius: 4px;
+  border-color: #f4511e;
+  cursor: pointer;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  padding-bottom: 2.5rem;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+  background-color: #f6f6f6;
+}
+
+.inline {
+  display: inline;
+  max-width: 100%;
+  text-align: center;
+}
+
+.label-title {
+  font: "Trebuchet MS", Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.label-author-year {
+  font: "Trebuchet MS", Helvetica, sans-serif;
+}
+</style>
+
+<body>
+  <div class="page-container">
+
+    <div class="content-wrap">
+
+      <div class="header">
+        <label class="split-just-left">Project 1: Books</label>
+        <label class="split-just-right">Cory Miller - CS50's Web Programming</label>
+      </div>
+
+
+      <div class="container-fluid bg-grey">
+        <h2>SEARCH RESULTS</h2>
+        <label>{{ result_count }} possible matches for your search entry:</label>
+        {% if result_count == 100 %}
+        <label>*MAXIMUM QUERY OF 100 REACHED.</label>
+        {% endif %}
+      </div>
+
+
+      <div class="grid-container">
+        {% for result in results %}
+        <div class="grid-item">
+          <form action="{{ url_for('book', isbn=result['b_isbn']) }}" class="form-inline text-center" method="get">
+            <div>
+              <label class="label-title">{{ result['b_title'] }}</label>
+            </div>
+            <div>
+              <label class="label-author-year">By: {{ result['b_author'] }} in {{ result['b_year'] }}</label>
+            </div>
+            <button type="submit" name="review_button" value="review" class="review-button">Review</button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="footer">
+        <div class="inline">
+          <form action="{{ url_for('logout') }}">
+            <label class="warning-message">{{ message }}</label>
+            <button class="btn search-button">Sign Out</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </body>
+
+  </html>

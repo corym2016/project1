@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+.header {
+  background-color: #f4511e; /* Orange */
+  color: #ffffff;
+  height: auto;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.split-just-left {
+  width: 50%;
+  float: left;
+  text-align: left;
+  margin-top: 6px;
+  margin-left: 20px;
+}
+
+.split-just-right {
+  width: 50%;
+  float: right;
+  text-align: right;
+  margin-top: -17px;
+  margin-right: 20px;
+}
+
+.container-fluid {
+  padding: 5px;
+  text-align: center;
+}
+
+.bg-grey {
+  background-color: #f6f6f6;
+}
+
+.search-button {
+  background-color: #f4511e;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.search-container {
+  border-radius: 5px;
+  border-color: black;
+  border-style: solid;
+  border-color: #f4511e;
+  border-width: thin;
+  background-color: #f2f2f2;
+  padding: 20px;
+  text-align: center;
+  max-width: 200;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 20px;
+}
+
+.search-container-2 {
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #f4511e;
+  border-width: thin;
+  background-color: #f2f2f2;
+  padding: 10px;
+  text-align: center;
+  max-width: 150;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.search-container-3 {
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #f4511e;
+  border-width: thin;
+  background-color: white;
+  padding: 10px;
+  text-align: center;
+  max-width: 150;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.inline {
+  display: inline;
+  max-width: 100%;
+  text-align: center;
+  margin-top: 1px;
+}
+
+.search-button {
+  background-color: #f4511e;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.edit-button {
+  background-color: #f4511e;
+  color: white;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: white;
+  color: #f4511e;
+  padding: 4px 15px;
+  border: solid;
+  border-radius: 4px;
+  border-width: thin;
+  border-color: #f4511e;
+  cursor: pointer;
+}
+
+.input-bar {
+  margin-top: 6px;
+  padding: 8px 2px;
+  border-radius: 4px;
+  border-style: groove;
+  width: 80%;
+}
+
+.warning-message {
+  font-size: 14px;
+  font-style: italic;
+  color: #f4511e;
+}
+
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  padding-bottom: 2.5rem;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+  background-color: #f6f6f6;
+}
+
+.itals {
+  font-style: italic;
+}
+</style>
+
+<body>
+  <div class="page-container">
+
+    <div class="content-wrap">
+
+      <div class="header">
+        <label class="split-just-left">Project 1: Books</label>
+        <label class="split-just-right">Cory Miller - CS50's Web Programming</label>
+      </div>
+
+
+      <div class="container-fluid bg-grey">
+        <h2>WELCOME TO YOUR PROFILE!</h2>
+        <h2>{{ user[3] }} {{ user[4] }}</h2>
+      </div>
+
+      <div class="search-container">
+        <form action="{{ url_for('search') }}" method="get">
+          <div>
+            <label class="input-label">Search for a book to leave a review:</label>
+          </div>
+          <div class="inline">
+            <input class="input-bar" name="input"  placeholder="ISBN / Title / Author / Year">
+            <button type="btn btn-primary button" class="search-button">Search</button>
+          </div>
+        </form>
+      </div>
+
+
+      <div class="search-container-2">
+        <h3>Your Book Reviews:</h3>
+        <ul>
+          {% if length == 0 %}
+          <p class="inline text-center">You have not reviewed any books. You may search for a book then leave a review.</p>
+          {% endif %}
+          {% for i in range(0,length) %}
+          <div class="search-container-3">
+            <form action="{{ url_for('book_update', isbn=books[i][1], review_id=reviews[i][0]) }}" class="form-inline text-center" method="post">
+              <p>{{ books[i]['b_title'] }}, {{ books[i]['b_author'] }}, {{ books[i]['b_year'] }}</p>
+              <p>Your Rating (1-5): {{ reviews[i]['r_rating'] }}</p>
+              <p class="itals">{{ reviews[i]['r_response'] }}</p>
+              <div class="form-group">
+                <button class="edit-button" type="submit" name="submit_button" value="edit">Edit</button>
+                <button class="delete-button" type="submit" name="submit_button" value="delete">Delete</button>
+              </div>
+            </form>
+          </div>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="inline">
+        <form action="{{ url_for('logout') }}">
+          <label class="warning-message">{{ message }}</label>
+          <button class="btn search-button">Sign Out</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
