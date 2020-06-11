@@ -1,4 +1,4 @@
-# CS50W Project 1 (Books) - Cory Miller
+#  CS50W Project 1 (Books) - Cory Miller
 
 ## Project Requirements
  https://docs.cs50.net/web/2020/x/projects/1/project1.html
