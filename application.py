@@ -287,3 +287,27 @@ def save_edit(isbn, review_id):
         books.append(book)
     # Sending users data to next page
     return render_template("profile.html", user=user, books=books, reviews=reviews, length=length, message="Edited review.")
+
+@app.route("/api/<isbn>", methods=["GET"])
+def api_call(isbn):
+    # grabbing book details from isbn given
+    book = db.execute("SELECT b_title, b_author, b_year, b_isbn, \
+                        COUNT(reviews.r_id) as review_count, \
+                        AVG(reviews.r_rating) as rate_average \
+                        FROM books \
+                        INNER JOIN reviews \
+                        ON books.b_id = reviews.r_book_id \
+                        WHERE b_isbn = :isbn \
+                        GROUP BY title, author, year, isbn",
+                        {"isbn": isbn})
+    # check for errors
+    if book.rowcount != 1:
+        return jsonify({"ERROR": "invalid book ISBN"}), 422
+    # get actual result
+    tmp = book.fetchone()
+    # convert to dict
+    result = dict(tmp.items())
+    # round avg score to 2 decimal pts
+    result['rate_average'] = float('%.2f'%(result['rate_average']))
+    # passing results
+    return jsonify(result)
