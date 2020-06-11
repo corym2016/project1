@@ -298,7 +298,7 @@ def api_call(isbn):
                         INNER JOIN reviews \
                         ON books.b_id = reviews.r_book_id \
                         WHERE b_isbn = :isbn \
-                        GROUP BY title, author, year, isbn",
+                        GROUP BY b_title, b_author, b_year, b_isbn",
                         {"isbn": isbn})
     # check for errors
     if book.rowcount != 1:
